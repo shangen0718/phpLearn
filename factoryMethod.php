@@ -1,29 +1,37 @@
 <?php
 
+#餐點
+class foods
+{
+    public $burger = 10;
+    public $fries = 20;
+    public $soda = 30;
+}
 #麥當勞
 class Mcdonalds
 {
     #菜單列表
-    public $foodPriceList = array(
-        'burger' => 10,
-        'fries' => 20,
-        'soda' => 30,
-    );
+    public $foodPriceList;
     public $orderPrice = 0;
+
+    public function __construct($foodPriceList){
+        $this->foodPriceList = $foodPriceList;
+    }
+
     #菜單
     public function Menu(){
         return $this->foodPriceList;
     }
     #點單一餐點
     public function Order($food){
-        $this->orderPrice = $this->orderPrice + $this->foodPriceList[$food];
-        return $this->foodPriceList[$food];
+        $this->orderPrice = $this->orderPrice + $this->foodPriceList->$food;
+        return $this->foodPriceList->$food;
     }
     #點多樣餐點
     public function Orders(... $foods){
         $sum = 0;
         foreach ($foods as $key => $value) {
-            $sum = $sum + $this->foodPriceList[$value];
+            $sum = $sum + $this->foodPriceList->$value;
         }
         $this->orderPrice = $this->orderPrice + $sum;
         return $sum;
@@ -34,7 +42,8 @@ class Mcdonalds
     }
 }
 
-$mcdonalds = new Mcdonalds();
+$foods = new foods();
+$mcdonalds = new Mcdonalds(new foods());
 
 $menu = $mcdonalds->Menu();
 echo '麥當勞餐點';
