@@ -1,5 +1,11 @@
 <?php
-
+/*
+網頁一打開 會看到菜單 單點價目表
+有一個輸入框
+可以讓人點餐
+還有一個結帳按鈕
+然後有一個可以看到print的text field
+*/
 #餐點
 class foods
 {
@@ -46,26 +52,49 @@ $foods = new foods();
 $mcdonalds = new Mcdonalds(new foods());
 
 $menu = $mcdonalds->Menu();
-echo '麥當勞餐點';
-print_r($menu);
 
-$burgerPrice = $mcdonalds->Order('burger');
-echo '點餐-漢堡:價格:';
-print_r($burgerPrice);
-echo "\n";
-$sodaPrice = $mcdonalds->Order('soda');
-echo '點餐-汽水:價格:';
-print_r($sodaPrice);
-echo "\n";
-
-$OrdersPrice = $mcdonalds->Orders('soda','burger','fries');
-echo '點多樣餐點-汽水,漢堡,薯條:價格:';
-print_r($OrdersPrice);
-echo "\n";
-
-$totail = $mcdonalds->Sum();
-echo '購物總金額:';
-print_r($totail);
-echo "\n";
-
+if($_POST){
+    $order = $_POST['order'];
+    $orderPrice = $mcdonalds->Order($order);
+}
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+</head>
+<body>
+<table>
+
+    <tbody>
+        <tr><td>菜單</td></tr>
+        <tr>
+            <td>品項</td>
+            <td>價格</td>
+        </tr>
+        <?php foreach ($menu as $key => $value) {?>
+        <tr>
+            <td><?=$key;?></td>
+            <td><?=$value;?></td>
+        </tr>
+        <?php }?>
+    </tbody>
+</table>
+<form action="" method="POST">
+    請輸入你要的餐點:<input type="text" name="order">
+    <br>
+    <button type="submit">結帳</button>
+</form>
+<br>
+<?php
+if($_POST){
+    echo '你的訂單:';
+
+    echo '餐點:'.$order.',價格:'.$orderPrice;
+}
+    
+?>
+</body>
+</html>
