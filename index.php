@@ -2,22 +2,24 @@
 ini_set("display_errors", "On");
 include_once (__DIR__ . "/autoload.php");
 
-use factory\Foods;
 use factory\Mcdonalds;
 use factory\McdonaldsFactory;
-// use factory\Kfc;
 
 $mcdonaldsFactory = new McdonaldsFactory();
-$mcdonalds = $mcdonaldsFactory->createRestaurant(new Foods());
+$mcdonalds = $mcdonaldsFactory->createRestaurant();
 $mcdonaldsMenu = $mcdonalds->Menu();
 
+$userOrder = null;
+if($_POST){
+    $order = $_POST['order'];
+    $result = $mcdonalds->Order($order);
+    // print_r($result);
+    $userOrder = $result;
+    // exit;
+}
 // var_dump($mcdonaldsMenu);
 // print_r($mcdonaldsMenu);
-foreach ($mcdonaldsMenu as $key => $value) {
-    echo $key."<br>";
-    echo $value."<br>";
-}
-exit;
+// print_r($mcdonaldsMenu);exit;
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,10 +82,19 @@ exit;
         <div id="menu-body">
             <table id="menu-order">
                 <tr>
-                    <!-- <td class="text-center">編號</td> -->
+                    <td class="text-center">編號</td>
                     <td class="text-center">品名</td>
-                    <td class="text-center">價格</td>
+                    <!-- <td class="text-center">價格</td> -->
                 </tr>
+                <?php
+                    foreach ($mcdonaldsMenu as $key => $value) {
+                ?>
+                <tr>
+                    <td class="text-center"><?=$key?></td>
+                    <td class="text-center"><?=$value?></td>
+                </tr>
+                <?php    }
+                ?>
             </table>
         </div>
     </div>
@@ -93,11 +104,16 @@ exit;
         </div>
         <div id="menu-body">
             <div id="menu-order">
-                <!-- <form action="" method="POST"> -->
+                <form action="" method="POST">
                     請輸入你要的餐點:<input type="text" name="order">
                     <!-- <br> -->
                     <button type="submit">結帳</button>
-                <!-- </form> -->
+                </form>
+                <?php
+                    if($userOrder){
+                        echo '你的餐點是'.$userOrder;
+                    }
+                ?>
             </div>
         </div>
     </div>    

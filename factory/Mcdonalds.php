@@ -9,18 +9,28 @@ class Mcdonalds implements Restaurant
     private $menu;
     private $orderPrice = 0;
 
-    public function __construct($menu){
-        $this->menu = $menu;
-
+    public function __construct(){
     }
     // #菜單
     public function Menu(){
+        $menu = array(
+            'fishBuger',
+            'chickenBuger',
+            'beefBuger'
+        );
+        $this->menu = $menu;
         return $this->menu;
     }
     #點單一餐點
     public function Order($food){
-        $this->orderPrice = $this->orderPrice + $this->menu->$food;
-        return $this->menu->$food;
+        if(array_key_exists($food,$this->menu) || in_array($food,$this->menu)){
+            if(array_key_exists($food,$this->menu)) return $this->menu[$food];
+            if(in_array($food,$this->menu)) return $food;
+        }
+        // print_r(array_search('fishBuger',$this->menu));exit;
+        return '沒有此餐點';
+        // $this->orderPrice = $this->orderPrice + $this->menu->$food;
+        // return $this->menu->$food;
     }
     #點多樣餐點
     public function Orders(... $foods){
